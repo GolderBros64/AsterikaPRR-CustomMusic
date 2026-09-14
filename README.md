@@ -28,7 +28,7 @@ Tool to easily insert custom songs in Asterika: Phantom Rose Refrain
     - ### Ready Beats
         - how many beats before the game starts scoring you
     - ### Song Lenght
-        - Doesn't seem to matter as the game seems to automatically change it (i'm assuming) you can either put how many beats it has or just the lenght in seconds
+        - Doesn't seem to matter as the game seems to automatically change it (i'm assuming) you can either put how many beats it has or just the lenght in seconds (the game seems to utilize beats in hex format, but you can use decimal and it works just fine as this data is reread from the .asterika chart file)
     - ### End beat
         - At what beat should the game stop scoring the player
     - ### Initial Delay (in Seconds)
