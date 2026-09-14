@@ -9,10 +9,10 @@ Tool to easily insert custom songs in Asterika: Phantom Rose Refrain
         - Internal ID the game uses to refer to the song, you need to fill this out for anything regarding songs
     - A .ogg for the main song
     - A .ogg for the preview (if you want) the preview only is long for 30 seconds and will loop each 30s
-    - A .png (or .jpg) for the icon (automatically converst .png to .jpg since you can simply rename it, won't add any other converting methods, convert beforehand)
+    - A .png (or .jpg) for the icon (automatically converts .png to .jpg since you can simply rename it, won't add any other converting methods, convert beforehand)
     - (Optional) a .asterika chart to package in the game (If not then the game will show the song, but pressing enter on it won't do anything)
 - In the Middle there is the game install Location (Steam -> Browse local Files) you are **REQUIRED** to have bought the game, this **isn't** a piracy tool, please support the creator of the game, and this tool is only tested on the steam version.
-    - If you have a clean copy of the game, you will need to press the `Backup Game` button, this will create `app_clean` and `app_mod` in the game's directory, this is done to ensure you don't have to reinstall the game to clean it, **DO NOT DELETE ANY OF THESE FOLDERS** or the tool won't give you the option to mod the game.
+    - If you have a clean copy of the game, you will need to press the `Backup Game` button, this will create `app_clean` and `app_mod` in the game's directory, this is done to ensure you don't have to reinstall the game to restore/un-mod it, **DO NOT DELETE ANY OF THESE FOLDERS** or the tool won't give you the option to mod the game.
     - Once backed up, you gain access to `Restore Clean Game` and `Patch Game`, `Restore Clean Game` uses the `app_clean` folder to repackage the game modless, `Patch Game` uses the `app_mod` instead.
 - On the Right Side is the "Song Entry Editor" this is needed so the game can recognize the song, NOTE: The game recognizes the songs as basegame songs and will reward you with extra stickers for beating them.
     - ### Title
