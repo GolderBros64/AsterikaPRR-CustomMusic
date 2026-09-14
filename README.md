@@ -52,3 +52,14 @@ Tool to easily insert custom songs in Asterika: Phantom Rose Refrain
 
 # asterikamdDecrypt.py
 This file is just to decrypt a .asterikamd to a .ogg, i used it to test the encrypt function properly, isn't required with the script and as such is an extra you can download, to utilize it just run: `python asterikamdDecrypt.py` it will then ask you for a .asterikamd file (you must type the .asterikamd as well) it will then out put a .ogg (yes the name is not fully correct but eh, you know the name already if you actually played the game no?)
+
+# Extra Stuff for coders and such
+`xor` Function for how the game uses it
+```js
+function xorRange(c,d,f,j){
+    if(j['length']===0x0)throw new Error('XOR key must not be empty');
+    for(let l=d;l<f;l++){
+        c[l]^=j[(l-d)%j['length']];
+    }
+}
+```
