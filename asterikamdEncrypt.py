@@ -4,7 +4,7 @@ key = bytes.fromhex(
     "4153544552494b4153555349434b657931"
 )
 
-def Encrypt(srcin: str,id: str,type: bool = False):
+def Encrypt(srcin: str, id: str, type: bool = False, output_dir=None):
     src = Path(srcin.strip().strip('"'))
     out_name = id.strip().strip('"')
 
@@ -14,8 +14,12 @@ def Encrypt(srcin: str,id: str,type: bool = False):
         else:
             out_name += ".asterikamd"
 
-    BASE_DIR = Path(__file__).resolve().parent
-    out = BASE_DIR / "EncryptedSongs" / out_name
+    if output_dir is None:
+        output_dir = Path(__file__).resolve().parent / "EncryptedSongs"
+    else:
+        output_dir = Path(output_dir)
+
+    out = output_dir / out_name
     out.parent.mkdir(parents=True, exist_ok=True)
 
     ogg = bytearray(src.read_bytes())

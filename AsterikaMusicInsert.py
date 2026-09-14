@@ -4,8 +4,15 @@ import shutil
 import subprocess
 import threading
 import json
+import sys
 from winotify import Notification, audio
 from pathlib import Path
+
+if getattr(sys, "frozen", False):
+    BASE_DIR = Path(sys.executable).resolve().parent
+else:
+    BASE_DIR = Path(__file__).resolve().parent
+    
 ctk = customtkinter
 canRestore = False
 isModded = False
@@ -233,10 +240,9 @@ def backupbutton():
     threading.Thread(target=backupbutton_thread, daemon=True).start()
 
 def backupbutton_thread():
-    global canRestore,canBak,isBacking
+    global canRestore,canBak,isBacking,BASE_DIR
     isBacking = True
     app.after(0, lambda: button2.configure(state="disabled"))
-    BASE_DIR = Path(__file__).resolve().parent
     canBak = False
     subprocess.run([
         "npx.cmd",
@@ -259,14 +265,15 @@ def backupbutton_thread():
     notif1("Succesfully Backed Up game Data","You can now Proceed with modding!")
 
 def EncryptSongBT():
-    BASE_DIR = Path(__file__).resolve().parent
+    global BASE_DIR
     out = BASE_DIR / "EncryptedSongs" / (entry.get() + ".jpg")
     outa = BASE_DIR / "EncryptedSongs" / (entry.get()+".asterika")
+    encrypted_dir = BASE_DIR / "EncryptedSongs"
     try:
-        asterikamdEncrypt.Encrypt(entrya.get(),entry.get())
-        asterikamdEncrypt.Encrypt(entrya.get(),entry.get(),True)
-        shutil.copy2(entryc.get(), out)
-        shutil.copy2(entry5.get(),outa)
+        asterikamdEncrypt.Encrypt(entrya.get(),entry.get(),False,output_dir=encrypted_dir)
+        asterikamdEncrypt.Encrypt(entryb.get(),entry.get(),True,output_dir=encrypted_dir)
+        shutil.copy2(BASE_DIR / entryc.get(), out)
+        shutil.copy2(BASE_DIR / entry5.get(),outa)
         notif1("Succesfully Encripted Song: "+entry.get(),"Files in: "+str(BASE_DIR / "EncryptedSongs"),True,str(BASE_DIR / "EncryptedSongs"))
     except Exception as e:
         print(f"Error: {e}")
@@ -354,9 +361,9 @@ def insertEntry():
         notif1(f"An Error occured while Adding Entry: {type(e).__name__}","Please Check the console for the full error")
 
 def insertfiles():
+    global BASE_DIR
     buttonFiles.configure(state="disabled")
     buttonFilesRM.configure(state="disabled")
-    BASE_DIR = Path(__file__).resolve().parent
     idl = entry.get()
     dest = Path(entry2.get()) / "app_mod" / "out" / "renderer" / "music" / "custom"
     dest.mkdir(parents=True, exist_ok=True)
@@ -376,7 +383,6 @@ def insertfiles():
 def removefiles():
     buttonFiles.configure(state="disabled")
     buttonFilesRM.configure(state="disabled")
-    BASE_DIR = Path(__file__).resolve().parent
     idl = entry.get()
     dest = Path(entry2.get()) / "app_mod" / "out" / "renderer" / "music" / "custom"
     dest.mkdir(parents=True, exist_ok=True)
