@@ -4,7 +4,9 @@ Tool to easily insert custom songs in Asterika: Phantom Rose Refrain
 ## HOW TO USE (asterikamdEncrypt.py & AsterikaMusicInsert.exe)
 You need [Node JS](https://nodejs.org/en)
 
-[video once i make it :p]
+[Here's a video tutorial](https://youtu.be/ZFAr0wiisGw)
+
+I suggest you read this toh
 - Download the prebuilt `.zip` from the releases (or the SourceCode if you're more comforable with that)
 - Once downloaded, run the `.exe` (or `AsterikaMusicInsert.py` for SourceCode)
 - On the Left Side, there's a section where you can encrypt songs, you require:
