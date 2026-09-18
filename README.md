@@ -3,7 +3,7 @@ Tool to easily insert custom songs in Asterika: Phantom Rose Refrain
 [Showcase Vid](https://youtu.be/dN-e6RkGgZU)
 
 ### Stuff i will do
-- Mod Indicator [ ]
+- [ ] Mod Indicator
 - Packable Songs (& Pack Updates)          ⬚⬚⬚⬚⬚ 0%
 - Modding (ie Custom Code / Song Scripts)  ⬚⬚⬚⬚⬚ 0%
 
