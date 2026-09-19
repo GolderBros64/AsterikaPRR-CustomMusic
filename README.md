@@ -46,9 +46,8 @@ I suggest you read this toh
         - How many seconds to delay the song (before it atcually starts)
 - ## Difficulty Tagging
     - This is till part of the right side, just that i had to add another frame
-    - Tags, i will have another file (tags.md) once i've looked at all of them, since they use Internal Label names instead of plain text
         - ### Tags
-            - You can insert multiple tags via tag1,tag2
+            - You can insert multiple tags via tag1,tag2 (see [tags.md](tags.md))
         - ### Level
             - Difficulty level to show to the player on the menus
 - ### Remove/Add entry
