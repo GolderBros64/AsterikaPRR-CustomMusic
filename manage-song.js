@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const file = ".\\app_mod\\out\\renderer\\assets\\index-CzdpGZJ0.js";
+const file = ".\\app_mod\\out\\renderer\\assets\\index-ByyUtReX.js";
 
 const command = process.argv[2];
 const songId = process.argv[3];
