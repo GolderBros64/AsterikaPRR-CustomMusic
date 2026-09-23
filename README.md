@@ -2,6 +2,13 @@
 Tool to easily insert custom songs in Asterika: Phantom Rose Refrain
 [Showcase Vid](https://youtu.be/dN-e6RkGgZU)
 
+## HOW TO UPDATE
+- Delete `app_clean` from game directory
+- Copy `custom` from `app_mod/out/renderer/music` somewhere
+- Delete `app_mod`
+- Open the tool and backup the game
+- Copy `custom` back in `app_mod/out/renderer/music`
+
 ### Stuff i will do
 - [ ] Mod Indicator
 - Packable Songs (& Pack Updates)          ⬚⬚⬚⬚⬚ 0%
