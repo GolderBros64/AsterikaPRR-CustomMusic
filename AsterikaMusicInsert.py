@@ -536,6 +536,7 @@ def importMod():
     shutil.copy2(out / f"{idl}.jpg",BASE_DIR / "EncryptedSongs")
     shutil.copy2(out / f"{idl}.asterika",BASE_DIR / "EncryptedSongs")
     buttonInMod.configure(state="enabled")
+    #a
 
     
 
