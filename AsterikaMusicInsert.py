@@ -7,6 +7,7 @@ import json
 import sys
 from winotify import Notification, audio
 from pathlib import Path
+import zipfile
 
 if getattr(sys, "frozen", False):
     BASE_DIR = Path(sys.executable).resolve().parent
@@ -18,16 +19,23 @@ canRestore = False
 isModded = False
 canBak = False
 isBacking = False
+indexFile = "index-D6DDfdBg.js"
 #npx.cmd @electron/asar extract .\resources\app.asar .\app_clean
 
 app = ctk.CTk()
-app.title("AsterikaCustomMusicInsertHelper - v1.0 - ManageSongs.js for Asterika V1.0.3.11")
+app.title("AsterikaCustomMusicInsertHelper - V1.1")
 app.geometry("900x450")
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("dark-blue")
 container = ctk.CTkFrame(app, fg_color="transparent")
 container.pack(expand=True)
+
+def pack_files(output_file, files):
+    with zipfile.ZipFile(output_file, "w", zipfile.ZIP_DEFLATED) as z:
+        for file in files:
+            file = Path(file)
+            z.write(file, arcname=file.name)
 
 
 frame = ctk.CTkFrame(container,corner_radius=15,border_width=5,border_color="#E05D7B",width=266)
@@ -71,10 +79,26 @@ entry5 = ctk.CTkEntry(frame, placeholder_text="filename.asterika",fg_color="#2A2
 entry5.pack(pady=(5,10),padx=40)
 #----
 #Frame2
+allIdx = [
+    "index-D6DDfdBg.js", #1.0.5.11
+    "index-ByyUtReX.js", #1.0.4.11
+    "index-CzdpGZJ0.js", #1.0.3.10
+]
+def chooseVersion(choice):  #.\\app_mod\\out\\renderer\\assets\\index-D6DDfdBg.js
+    global indexFile
+    idx = dropdown.cget("values").index(choice)
+    indexFile = allIdx[idx]
+
 label2 = ctk.CTkLabel(frame2, text="Game install Location", fg_color="#26334E",corner_radius=20,font=("",20))
 label2.pack(pady=(20,5),padx=10)
 entry2 = ctk.CTkEntry(frame2, placeholder_text="Location... (C:\\)",fg_color="#2A2A24",width=248)
 entry2.pack(pady=5,padx=40)
+dropdown = ctk.CTkOptionMenu(
+    master=frame2,
+    values=["v1.0.5.11","v1.0.4.11","v1.0.3.10"],
+    command=chooseVersion
+)
+dropdown.pack(pady=5)
 #----
 #Frame3
 #title,enname(opt),id,artist,composer(op),path(?),bpm,readybeats,tracklenght(in s),endbeat,initialdelay(in s)
@@ -414,6 +438,103 @@ def packgame():
         print(f"Error: {e}")
         notif1(f"An Error occured while Patching game: {type(e).__name__}","Please Check the console for the full error\n(are we cooked?)")
 
+def modfiles():
+    global BASE_DIR
+    buttonMakeMod.configure(state="disabled")
+    idl = entry.get()
+    out = BASE_DIR / "EncryptedSongs" / f"{idl}"
+    out.mkdir(parents=True, exist_ok=True)
+    err = "?"
+    try:
+        err = "Missing Song File"
+        shutil.copy2(BASE_DIR / "EncryptedSongs" / f"{idl}.asterikamd",out) #MusicFile
+        err = "Missing Song Preview File"
+        shutil.copy2(BASE_DIR / "EncryptedSongs" / f"{idl}.preview.asterikamd",out) #MusicPreviewFile
+        err = "Missing Song Image File"
+        shutil.copy2(BASE_DIR / "EncryptedSongs" / f"{idl}.jpg",out) #MusicIconFile
+        err = "Missing Song Chart File"
+        shutil.copy2(BASE_DIR / "EncryptedSongs" / f"{idl}.asterika",out)
+        err = "Song Entry Related Error"
+        songEntry = {
+            "title": entry3.get(),
+            "enName": entry3a.get(),
+            "id": entry.get(),
+            "artist": entry3b.get(),
+            "composer": entry3c.get(),
+            "bpm": int(entry3d.get()),
+            "readyBeats": int(entry3e.get()),
+            "trackLength": float(entry3f.get()),
+            "endBeat": int(entry3g.get()),
+            "initialDelay": float(entry3h.get()),
+            "difficultyTagging": {
+                "1": {
+                    "tags": [tag.strip() for tag in entryF4.get().split(",") if tag.strip()],
+                    "level": int(entryF4a.get())
+                },
+                "2": {
+                   "tags": [tag.strip() for tag in entry2F4.get().split(",") if tag.strip()],
+                   "level": int(entry2F4a.get())
+                },
+                "3": {
+                    "tags": [tag.strip() for tag in entry3F4.get().split(",") if tag.strip()],
+                    "level": int(entry3F4a.get())
+                },
+                "4": {
+                    "tags": [tag.strip() for tag in entry4F4.get().split(",") if tag.strip()],
+                    "level": int(entry4F4a.get())
+                }
+            }
+        }
+        err = "Song Entry File Generate Error"
+        with open(out / f'{idl}.json','w') as f:
+            f.write(json.dumps(songEntry),indent = 4)
+        notif1("Successfully Made Importable mod for "+idl,"Remember to Patch the Game first!",True)
+    except FileNotFoundError:
+        notif1(f"Failed to Package Mod! {err}",True,str(BASE_DIR / "EncryptedSongs"))
+
+def importMod():
+    global BASE_DIR
+    buttonInMod.configure(state="disabled")
+    idl = entry.get()
+    out = BASE_DIR / "EncryptedSongs" / f"{idl}"
+    table = {}
+    with open(out / f'{idl}.json', 'r', encoding='utf-8') as f:
+        table = json.load(f)
+
+    for i in [entry,entry3a,entry3,entry3b,entry3c,entry3d,entry3e,entry3f,entry3g,entry3h]:
+        i.delete(0,"end")
+
+    entry.insert(0,table["id"])
+    entry3.insert(0,table["title"])
+    entry3a.insert(0,table["enName"])
+    entry3b.insert(0,table["artist"])
+    entry3c.insert(0,table["composer"])
+    entry3d.insert(0,table["bpm"])
+    entry3e.insert(0,table["readyBeats"])
+    entry3f.insert(0,table["trackLength"])
+    entry3g.insert(0,table["endBeat"])
+    entry3h.insert(0,table["initialDelay"])
+
+    diffs = table["difficultyTagging"]
+    for i in [entryF4, entry2F4, entry3F4, entry4F4,entryF4a, entry2F4a, entry3F4a, entry4F4a]:
+        i.delete(0, "end")
+
+    entryF4.insert(0, ", ".join(diffs["1"]["tags"]))
+    entryF4a.insert(0, str(diffs["1"]["level"]))
+    entry2F4.insert(0, ", ".join(diffs["2"]["tags"]))
+    entry2F4a.insert(0, str(diffs["2"]["level"]))
+    entry3F4.insert(0, ", ".join(diffs["3"]["tags"]))
+    entry3F4a.insert(0, str(diffs["3"]["level"]))
+    entry4F4.insert(0, ", ".join(diffs["4"]["tags"]))
+    entry4F4a.insert(0, str(diffs["4"]["level"]))
+    shutil.copy2(out / f"{idl}.asterikamd",BASE_DIR / "EncryptedSongs")
+    shutil.copy2(out / f"{idl}.preview.asterikamd",BASE_DIR / "EncryptedSongs")
+    shutil.copy2(out / f"{idl}.jpg",BASE_DIR / "EncryptedSongs")
+    shutil.copy2(out / f"{idl}.asterika",BASE_DIR / "EncryptedSongs")
+    buttonInMod.configure(state="enabled")
+
+    
+
 button = customtkinter.CTkButton(frame, text="Encrypt Song", command=EncryptSongBT,fg_color="#E05D7B",hover_color="#FF94AC")
 button.pack(pady=(10,10))
 
@@ -436,16 +557,22 @@ buttonFiles = customtkinter.CTkButton(frame4, text="Insert Files", command=inser
 buttonFiles.pack(pady=(5,5))
 buttonFilesRM = customtkinter.CTkButton(frame4, text="Remove Files", command=removefiles,fg_color="#DC1A80",hover_color="#DD9AC1",state="disabled")
 buttonFilesRM.pack(pady=(5,10))
+buttonMakeMod = customtkinter.CTkButton(frame4, text="Package Into Mod", command=modfiles,fg_color="#DC1A80",hover_color="#DD9AC1",state="disabled")
+buttonMakeMod.pack(pady=(5,10))
+buttonInMod = customtkinter.CTkButton(frame4, text="Import Mod", command=importMod,fg_color="#DC1A80",hover_color="#DD9AC1",state="disabled")
+buttonInMod.pack(pady=(5,10))
 
 def checkEntry():
     global isEntrying,isRemoving,isModded
     buttonEntryRM.configure(state="enabled")
     if any(not lugi.get() for lugi in [entry,entry3,entry3b,entry3d,entry3e,entry3f,entry3g,entry3h]) and (not isEntrying):
         buttonEntry.configure(state="disabled")
+        buttonMakeMod.configure(state="disabled")
         if not entry.get() and not isRemoving:
             buttonEntryRM.configure(state="disabled")
     else:
         buttonEntry.configure(state="enabled")
+        buttonMakeMod.configure(state="enabled")
 
     if not isModded:
         buttonEntryRM.configure(state="disabled")
@@ -457,6 +584,11 @@ def checkEntry():
     else:
         buttonFiles.configure(state="enabled")
         buttonFilesRM.configure(state="enabled")
+
+    if not(entry.get()):
+        buttonInMod.configure(state="disabled")
+    else:
+        buttonInMod.configure(state="enabled")
 
     app.after(1000, checkEntry)
 

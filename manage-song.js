@@ -1,15 +1,24 @@
 const fs = require("fs");
-
-const file = ".\\app_mod\\out\\renderer\\assets\\index-ByyUtReX.js";
+const path = require("path");
 
 const command = process.argv[2];
 const songId = process.argv[3];
 const songJson = process.argv[4];
+const indexFile = process.argv[5];
 
-if (!command || !songId) {
+const file = path.join(
+    ".",
+    "app_mod",
+    "out",
+    "renderer",
+    "assets",
+    indexFile || ""
+);
+
+if (!command || !songId || !indexFile) {
     console.log("Usage:");
-    console.log("  node manage-song.js add <songId> <songData>");
-    console.log("  node manage-song.js remove <songId>");
+    console.log("  node manage-song.js add <songId> <songData> <fileidx>");
+    console.log("  node manage-song.js remove <songId> <fileidx>");
     process.exit(1);
 }
 
@@ -28,13 +37,6 @@ if (command === "add") {
         console.error("Invalid song JSON.");
         process.exit(1);
     }
-}
-
-if (!command || !songId) {
-    console.log("Usage:");
-    console.log("  node manage-song.js add <songId>");
-    console.log("  node manage-song.js remove <songId>");
-    process.exit(1);
 }
 
 const data = fs.readFileSync(file);
