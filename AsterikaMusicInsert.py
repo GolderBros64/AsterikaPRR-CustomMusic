@@ -318,6 +318,7 @@ def restoregame():
 isRemoving = False
 def removeEntry():
     global isRemoving
+    global BASE_DIR
     try:
         isRemoving = True
         buttonEntryRM.configure(state="disabled")
@@ -325,7 +326,9 @@ def removeEntry():
             "node",
             "manage-song.js",
             "remove",
-            entry.get()
+            entry.get(),
+            "",
+            str(indexFile)
         ], cwd=entry2.get(), check = True)
         isRemoving = False
         buttonEntryRM.configure(state="enabled")
@@ -375,7 +378,8 @@ def insertEntry():
             "manage-song.js",
             "add",
             songEntry["id"],
-            json.dumps(songEntry)
+            json.dumps(songEntry),
+            str(indexFile)
         ], cwd=entry2.get(), check = True)
         isEntrying = False
         buttonEntry.configure(state="enabled")
@@ -486,8 +490,8 @@ def modfiles():
             }
         }
         err = "Song Entry File Generate Error"
-        with open(out / f'{idl}.json','w') as f:
-            f.write(json.dumps(songEntry),indent = 4)
+        with open(out / f'{idl}.json', 'w', encoding='utf-8') as f:
+            json.dump(songEntry, f, indent=4, ensure_ascii=False)
         notif1("Successfully Made Importable mod for "+idl,"Remember to Patch the Game first!",True)
     except FileNotFoundError:
         notif1(f"Failed to Package Mod! {err}",True,str(BASE_DIR / "EncryptedSongs"))
