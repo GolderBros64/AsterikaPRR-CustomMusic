@@ -12,7 +12,8 @@ Tool to easily insert custom songs in Asterika: Phantom Rose Refrain
 ### Stuff i will do
 - [ ] Mod Indicator
 - Packable Songs (& Pack Updates)          ■■■■■ 100%
-- Modding (ie Custom Code / Song Scripts)  ⬚⬚⬚⬚⬚ 0%
+- Modding Import (ie Custom Code / Song Scripts)  ⬚⬚⬚⬚⬚ 0%
+- Mod Importing (ie Multiple songs & scripts able to be imported with 1 click) ⬚⬚⬚⬚⬚ 0%
 
 ## HOW TO USE (asterikamdEncrypt.py & AsterikaMusicInsert.exe)
 You need [Node JS](https://nodejs.org/en)
